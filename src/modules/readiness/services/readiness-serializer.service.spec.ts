@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/unbound-method */
 
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReadinessSerializerService } from './readiness-serializer.service';
 import { AiCoachService } from '../../ai-coach/services/ai-coach.service';

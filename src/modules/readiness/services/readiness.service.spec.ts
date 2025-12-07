@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReadinessService } from './readiness.service';
 import { ScoringEngineService } from './scoring-engine.service';
