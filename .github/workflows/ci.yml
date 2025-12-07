@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      # 'true' in workflow dispatch : Lint set-up handled in githooks
+      RUN_LINT: 'false'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (optional)
+        if: ${{ env.RUN_LINT == 'true' }}
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test -- --ci --runInBand --coverage
+
+      - name: Run e2e tests
+        run: npm run test:e2e -- --ci --runInBand
