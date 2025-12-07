@@ -391,7 +391,7 @@ Career skills (40%) > Academics (35%) > Life skills (25%)
 
 ## Loom Walkthrough
 
-**Video:** [Loom Walkthrough]
+**Video:** [[Loom Video](https://www.loom.com/share/c6ec88e5d0a2458fae1c03bbd2016144)]
 
 **Covers:** Project structure, request flow, scoring logic, Vertex AI integration, API demo, test coverage
 
