@@ -37,8 +37,6 @@ export class VertexAiClientService implements OnModuleInit {
       }
 
       // Set credentials - priority order:
-      // 1. GOOGLE_SERVICE_ACCOUNT_JSON env var (parse and write to temp file)
-      // 2. GOOGLE_APPLICATION_CREDENTIALS file path (legacy support)
       const jsonCreds = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
       const fileCreds = credentials;
 
@@ -50,18 +48,12 @@ export class VertexAiClientService implements OnModuleInit {
         try {
           writeFileSync(credsPath, jsonCreds);
           process.env.GOOGLE_APPLICATION_CREDENTIALS = credsPath;
-          this.logger.log(
-            'Using service account credentials from GOOGLE_SERVICE_ACCOUNT_JSON',
-          );
         } catch (error) {
           this.logger.error('Failed to write credentials file', error);
           throw new Error('Failed to configure service account credentials');
         }
       } else if (fileCreds) {
         process.env.GOOGLE_APPLICATION_CREDENTIALS = fileCreds;
-        this.logger.log(
-          `Using service account credentials from file: ${fileCreds}`,
-        );
       } else {
         this.logger.warn(
           'No service account credentials found. Vertex AI may fail to authenticate.',
@@ -85,9 +77,6 @@ export class VertexAiClientService implements OnModuleInit {
       });
 
       this.initialized = true;
-      this.logger.log(
-        `Vertex AI initialized successfully with model: ${model}`,
-      );
     } catch (error) {
       this.logger.error('Failed to initialize Vertex AI client', error);
       this.initialized = false;
@@ -108,12 +97,6 @@ export class VertexAiClientService implements OnModuleInit {
       const result = (await this.model.generateContent(
         prompt,
       )) as unknown as VertexAiGenerateContentResult;
-
-      // Log the full response structure for debugging
-      this.logger.debug(
-        'Vertex AI response structure:',
-        JSON.stringify(result, null, 2),
-      );
 
       const response = result.response;
 
@@ -156,9 +139,6 @@ export class VertexAiClientService implements OnModuleInit {
     try {
       const text = await this.generateContent(prompt);
 
-      // Log the raw response for debugging
-      this.logger.debug('Raw Vertex AI response:', text.substring(0, 500));
-
       // Extract JSON from markdown code blocks if present
       let jsonText = text.trim();
       // Remove markdown code blocks
@@ -181,8 +161,6 @@ export class VertexAiClientService implements OnModuleInit {
       jsonText = jsonText
         .replace(/[\u0000-\u001F]+/g, '') // eslint-disable-line no-control-regex
         .replace(/,(\s*[}\]])/g, '$1'); // Remove trailing commas
-
-      this.logger.debug('Cleaned JSON text:', jsonText.substring(0, 500));
 
       return JSON.parse(jsonText) as T;
     } catch (error) {

@@ -40,10 +40,6 @@ export class AiCoachService {
     }
 
     try {
-      this.logger.log(
-        `Generating recommendations for learner with overall score: ${request.overall_score}`,
-      );
-
       // Build the prompt
       const prompt = this.promptBuilder.buildRecommendationPrompt(request);
 
@@ -52,10 +48,6 @@ export class AiCoachService {
         await this.vertexAiClient.generateStructuredContent<
           AIRecommendationDto[]
         >(prompt);
-
-      this.logger.log(
-        `Successfully generated ${recommendations.length} recommendations`,
-      );
 
       return recommendations;
     } catch (error) {
