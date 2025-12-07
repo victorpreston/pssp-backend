@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReadinessController } from './readiness.controller';
-import { ReadinessService } from './readiness.service';
+import { ReadinessService } from './services/readiness.service';
 
 describe('ReadinessController', () => {
   let controller: ReadinessController;
@@ -8,7 +8,14 @@ describe('ReadinessController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ReadinessController],
-      providers: [ReadinessService],
+      providers: [
+        {
+          provide: ReadinessService,
+          useValue: {
+            calculateReadiness: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<ReadinessController>(ReadinessController);
