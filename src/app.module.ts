@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ReadinessModule } from './readiness/readiness.module';
-import { AiCoachModule } from './ai-coach/ai-coach.module';
-import { GatewayModule } from './gateway/gateway.module';
+import { ReadinessModule } from './modules/readiness/readiness.module';
+import { AiCoachModule } from './modules/ai-coach/ai-coach.module';
 
 @Module({
-  imports: [ReadinessModule, AiCoachModule, GatewayModule],
+  imports: [ReadinessModule, AiCoachModule],
   controllers: [AppController],
   providers: [AppService],
 })
