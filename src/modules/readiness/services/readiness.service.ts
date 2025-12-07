@@ -13,7 +13,9 @@ export class ReadinessService {
     private readonly serializer: ReadinessSerializerService,
   ) {}
 
-  calculateReadiness(dto: CalculateReadinessDto): ReadinessResponseDto {
+  async calculateReadiness(
+    dto: CalculateReadinessDto,
+  ): Promise<ReadinessResponseDto> {
     const scores: CategoryScores = {
       academics: dto.academics,
       career_skills: dto.career_skills,
@@ -26,6 +28,8 @@ export class ReadinessService {
       scores,
       scoringResult,
       dto.previous_scores,
+      dto.context?.program,
+      dto.context?.goal,
     );
   }
 }

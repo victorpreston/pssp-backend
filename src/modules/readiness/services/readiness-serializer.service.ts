@@ -10,15 +10,20 @@ import {
   getCategoryStatus,
   calculateCategoryContribution,
 } from '../../../shared/utils/scoring.utils';
+import { AiCoachService } from '../../ai-coach/services/ai-coach.service';
 
 /** Transforms scoring results into response format */
 @Injectable()
 export class ReadinessSerializerService {
-  serialize(
+  constructor(private readonly aiCoachService: AiCoachService) {}
+
+  async serialize(
     scores: CategoryScores,
     scoringResult: ScoringResult,
     previousScores?: Array<{ date: string; overall: number }>,
-  ): ReadinessResponseDto {
+    program?: string,
+    goal?: string,
+  ): Promise<ReadinessResponseDto> {
     const readinessLevel = determineReadinessLevel(
       scoringResult.finalScore,
       scores,
@@ -31,6 +36,18 @@ export class ReadinessSerializerService {
       readinessLevel,
       previousScores,
     );
+
+    // Generate AI recommendations
+    const ai_recommendations =
+      await this.aiCoachService.generateRecommendations({
+        scores,
+        overall_score: scoringResult.finalScore,
+        readiness_level: readinessLevel,
+        strengths: insights.strengths,
+        growthAreas: insights.growthAreas,
+        program,
+        goal,
+      });
 
     return {
       overall_score: scoringResult.finalScore,
@@ -69,6 +86,7 @@ export class ReadinessSerializerService {
         },
       },
       insights,
+      ai_recommendations,
       calculated_at: new Date().toISOString(),
     };
   }

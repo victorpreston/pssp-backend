@@ -22,7 +22,9 @@ export class ReadinessController {
     type: ReadinessResponseDto,
   })
   @ApiResponse({ status: 400, description: 'Invalid input data' })
-  calculateReadiness(@Body() dto: CalculateReadinessDto): ReadinessResponseDto {
+  calculateReadiness(
+    @Body() dto: CalculateReadinessDto,
+  ): Promise<ReadinessResponseDto> {
     return this.readinessService.calculateReadiness(dto);
   }
 }

@@ -5,6 +5,7 @@ import {
   CategoryStatus,
   ScoreBreakdown,
 } from '../../../shared/types/readiness.types';
+import { AIRecommendationDto } from '../../ai-coach/dto/recommendation.dto';
 
 class CategoryBreakdown {
   @ApiProperty({ example: 80 })
@@ -37,25 +38,6 @@ class Insights {
   estimatedTimeToReady?: string;
 }
 
-class AIRecommendation {
-  @ApiProperty({ example: 'Focus on improving time management skills' })
-  recommendation: string;
-
-  @ApiProperty({ example: 'career_skills' })
-  category: string;
-
-  @ApiProperty({ example: 'high' })
-  priority: string;
-
-  @ApiProperty({
-    example: [
-      'Complete the project management course',
-      'Practice daily scheduling',
-    ],
-  })
-  actionItems?: string[];
-}
-
 /** Response DTO for readiness calculation results */
 export class ReadinessResponseDto {
   @ApiProperty({ example: 70, description: 'Overall readiness score (0-100)' })
@@ -80,6 +62,9 @@ export class ReadinessResponseDto {
 
   @ApiProperty({ type: Insights })
   insights: Insights;
+
+  @ApiProperty({ type: [AIRecommendationDto], required: false })
+  ai_recommendations?: AIRecommendationDto[];
 
   @ApiProperty({ example: '2025-12-07T00:00:00.000Z' })
   calculated_at: string;

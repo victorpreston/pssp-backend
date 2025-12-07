@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AiCoachService } from './ai-coach.service';
-import { AiCoachController } from './ai-coach.controller';
+import { AiCoachService } from './services/ai-coach.service';
+import { VertexAiClientService } from './services/vertex-ai-client.service';
+import { PromptBuilderService } from './services/prompt-builder.service';
 
 @Module({
-  controllers: [AiCoachController],
-  providers: [AiCoachService],
+  providers: [AiCoachService, VertexAiClientService, PromptBuilderService],
+  exports: [AiCoachService],
 })
 export class AiCoachModule {}
