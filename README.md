@@ -132,6 +132,8 @@ npm install
 cp .env.example .env
 ```
 
+> **Note:** A working `.env` file with valid Google Cloud credentials has been shared via email for testing purposes. You can use that file directly or configure your own using the template below.
+
 Edit `.env`:
 
 ```env
