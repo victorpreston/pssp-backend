@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   pssp-api-dev:
     container_name: pssp-readiness-api-dev
