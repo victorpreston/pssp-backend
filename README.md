@@ -1,6 +1,7 @@
 # Post-School Success Platform (PSSP) - Readiness Score API
 
-Backend API service that calculates personalized readiness scores for learners across academics, career skills, and life skills. Built with NestJS, TypeScript, and Google Vertex AI.
+Many young people finishing school or training programs have no clear, objective measure of whether they're actually ready for the real world specifically for employment and independent life. Educators and program administrators often rely on gut feeling or raw academic grades, which miss the full picture.
+PSSP (Post-School Success Platform) solves this by providing a data-driven readiness score that evaluates a learner holistically.
 
 ## Table of Contents
 
