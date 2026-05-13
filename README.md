@@ -15,77 +15,7 @@ PSSP (Post-School Success Platform) solves this by providing a data-driven readi
 
 ## Architecture
 
-### System Architecture
-
-```mermaid
-graph TB
-    Client[Client Application]
-    API[NestJS API Server]
-    Controller[Readiness Controller]
-    Service[Readiness Service]
-    Engine[Scoring Engine Service]
-    Serializer[Readiness Serializer Service]
-    AI[AI Coach Service]
-    Vertex[Google Vertex AI]
-
-    Client -->|POST /api/readiness/calculate| API
-    API --> Controller
-    Controller --> Service
-    Service --> Engine
-    Service --> Serializer
-    Engine -->|ScoringResult| Service
-    Serializer -->|Generate Recommendations| AI
-    AI -->|API Call| Vertex
-    Vertex -->|AI Response| AI
-    AI -->|Recommendations| Serializer
-    Serializer -->|ReadinessResponseDto| Service
-    Service -->|Response| Controller
-    Controller -->|JSON Response| Client
-
-    style Vertex fill:#4285f4,color:#fff
-    style AI fill:#34a853,color:#fff
-    style Engine fill:#fbbc04,color:#000
-    style Serializer fill:#ea4335,color:#fff
-```
-
-### Request Flow
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Controller
-    participant ReadinessService
-    participant ScoringEngine
-    participant Serializer
-    participant AiCoach
-    participant VertexAI
-
-    Client->>Controller: POST /api/readiness/calculate
-    Note over Client,Controller: { academics: 80, career_skills: 60, life_skills: 70 }
-
-    Controller->>ReadinessService: calculateReadiness(dto)
-    ReadinessService->>ScoringEngine: calculate(scores)
-
-    Note over ScoringEngine: 1. Calculate weighted average<br/>2. Identify weak areas<br/>3. Apply penalties<br/>4. Check for blockers
-
-    ScoringEngine-->>ReadinessService: ScoringResult
-    Note over ScoringEngine,ReadinessService: { baseScore, finalScore, penalty,<br/>weakAreas, hasBlocker }
-
-    ReadinessService->>Serializer: serialize(scores, result, context)
-
-    alt Vertex AI Enabled
-        Serializer->>AiCoach: generateRecommendations(context)
-        AiCoach->>VertexAI: Gemini API Call
-        VertexAI-->>AiCoach: AI Response
-        AiCoach-->>Serializer: Recommendations
-    else Vertex AI Disabled
-        Note over Serializer: Return empty recommendations
-    end
-
-    Serializer-->>ReadinessService: ReadinessResponseDto
-    ReadinessService-->>Controller: Response
-    Controller-->>Client: 200 OK + JSON Response
-```
+![PSSP Backend Architecture](docs/pssp-backend.png)
 
 ### Module Structure
 
